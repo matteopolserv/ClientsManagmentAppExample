@@ -1,0 +1,57 @@
+﻿@using ClientsManagmentApp.Interfaces;
+
+@model ProjectModel
+@{
+    ViewData["Title"] = "Dodaj projekt";
+}
+@inject IUserRepository userRepository
+
+@{
+    var clientsList = await userRepository.GetAllClientsAsync();
+}
+
+<h2 class="title">@ViewData["Title"]</h2>
+
+<form asp-controller="User" role="form" method="post" class="form-control">
+    <div class="form-control">
+        <label class="form-label" asp-for="ProjectName">Nazwa projektu</label>
+        <input class="input-group" asp-for="ProjectName" />
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="ClientName">Nazwa klienta</label>
+        <select asp-for="ClientId">
+            <option value=""></option>
+            @foreach (var client in clientsList)
+            {
+                
+                <option value="@client.ClientId">@client.ClientName</option>
+            }
+        </select>
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="DeadLine">Termin wykonania</label>
+        <input class="input-group" asp-for="DeadLine" />
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="Price">Wycena dla klienta</label>
+        <input class="input-group" asp-for="Price" />
+    </div>
+
+
+    <input type="hidden" value="valuation" asp-for="ProjectStatus" />
+   
+    <div class="form-control">
+        <label class="form-label" asp-for="ProjectDescription">Opis projektu</label>
+        <textarea class="form-control" asp-for="ProjectDescription"></textarea>
+    </div>
+
+    
+    <p></p>
+    <button type="submit" class="btn-success" asp-action="AddProject">Dodaj projekt</button>
+    
+    <button type="submit" class="btn-primary" asp-action="GetAllProjects">Powrót do listy projektów</button>
+    <p></p>
+    <p></p>
+
+</form>
+

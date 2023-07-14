@@ -1,0 +1,46 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model ClientModel
+@{
+    ViewData["Title"] = "Zostań klientem";
+}
+
+<h2 class="card-title">@ViewData["Title"]</h2>
+@inject UserManager<IdentityUser> userManager;
+@{
+    string userId =  userManager.GetUserId(Context.User);
+    var user = await userManager.FindByIdAsync(userId);
+    string userEmail = user.Email;
+}
+
+<form asp-action="BecomeClient" asp-controller="Client" role="form" method="post">
+     <div class="form-control">
+        <label class="form-label" asp-for="ClientName">Imię i nazwisko / Nazwa (wymagane)</label>
+        <input class="input-group" asp-for="ClientName" required/>
+    </div>
+    <div class="form-control">
+        <p>Adres email: @userEmail</p>
+        <input type="hidden" asp-for="ClientEmail" value="@userEmail" />
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="ClientPhone">Telefon (opcjonalne)</label>
+        <input class="input-group" asp-for="ClientPhone" />
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="ClientAddress">Adres (opcjonalne)</label>
+        <input class="input-group" asp-for="ClientAddress" />
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="NIP">NIP (opcjonalne)</label>
+        <input class="input-group" asp-for="NIP" />
+    </div>
+    <p></p>
+    <label for="Consent">Wyrażam zgodę na przetwarzanie danych osobowych zgodnie z <a href="https://crm.lotier.pl/Home/Privacy/" target="_blank">polityką prywatności oraz regulaminem świadczenia usług (wymagane)</a></label>
+    <input type="checkbox" name="Consent" value="true" required />
+   <p></p>
+   <button type="submit" asp-action="BecomeClient" class="btn-success">Zostań klientem</button>
+   
+</form>
+<p></p>
+<form asp-controller="User" role="form" method="post" class="form-control">
+<button type="submit" asp-action="ClientDashboard" class="btn-primary">Powrót do panelu użytkownika</button>
+</form>

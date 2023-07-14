@@ -1,0 +1,39 @@
+﻿@model List<ProjectModel>
+@{
+    ViewData["Title"] = "Lista projektów";
+}
+
+
+
+<h2 class="card-title">@ViewData["Title"]</h2>
+<p>@Html.ValidationSummary("", new { @class = "text-danger" })</p>
+<table class="table table-dark">
+    <thead>
+        <tr class="flex-row">
+            <th>Nazwa projektu</th>
+            <th>Klient</th>
+            <th>Termin wykonania</th>
+            <th>Zobacz szczegóły</th>
+            <th>Przenieś do archiwum</th>
+        </tr>
+    </thead>
+    <tbody class="table-striped">
+        @foreach (var item in Model)
+        {
+            if (item.IsVisible == true)
+            {
+                <tr class="flex-row">
+                    <td>@item.ProjectName</td>
+                    <td>@item.ClientName</td>
+                    <td>@item.DeadLine</td>
+                    <td><form asp-action="GetProjectDetails" role="form" method="get"><input type="hidden" name="ProjectId" value="@item.ProjectId" /><button class="btn btn-primary">Szczegóły</button></form></td>
+                    <td><form asp-action="ArichveProject" role="form" method="get"><input type="hidden" name="ProjectId" value="@item.ProjectId" /><button class="btn btn-danger">Przenieś do archiwum</button></form></td>
+                </tr>
+            }
+        }
+    </tbody>
+
+</table>
+<p></p>
+<a asp-action="AddProject" asp-controller="User" class="btn btn-primary">Dodaj projekt</a>
+

@@ -1,0 +1,41 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #ffffd2;
+    font-family: 'Trebuchet MS'
+
+}
+p{
+    font-size: 16px;
+}
+li{
+    font-size: 16px;
+
+}
+h2{
+    font-size: 36px;
+}
+a{
+    font-size: 16px;
+}
+textarea.form-control {
+    min-height: 300px;
+}
+
+#editor {
+    min-height: 300px;
+}

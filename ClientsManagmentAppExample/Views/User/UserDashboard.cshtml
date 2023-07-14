@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewData["Title"] = "Panel użytkownika";
+}
+
+<h2 class="card-title">@ViewData["Title"]</h2>
+@if (!ViewData.ModelState.IsValid && ViewData.ModelState[""].Errors.Count() > 0)
+{
+    <p class="text-danger">@ViewData.ModelState[""].Errors.First()</p>
+}
+<table class="table table-dark">
+    <thead>
+        <tr class="flex-row">
+            <th>Formularze</th>
+            <th>Klienci</th>
+            <th>Projekty</th>
+            <th>Archiwum projektów</th>
+            <th>Współpracownicy</th>
+        </tr>
+    </thead>
+    <tbody class="table-striped">
+        <tr class="flex-row">
+            <td><a asp-action="GetAllForms" class="btn btn-primary">Zobacz listę formularzy</a></td>    
+            <td><a asp-action="GetAllClients" class="btn btn-primary">Zobacz listę klientów</a></td>    
+            <td><a asp-action="GetAllProjects" class="btn btn-primary">Zobacz listę projektów</a></td>    
+            <td><a asp-action="GetArchivedProjects" class="btn btn-primary">Zobacz archiwum projektów</a></td>
+            <td><a asp-action="GetCooperators" class="btn btn-primary">Zobacz listę współpracowników</a></td>
+
+        </tr><tr class="flex-row">
+            <td></td>    
+            <td><a asp-action="AddClient" class="btn btn-primary">Dodaj klienta</a></td>    
+            <td><a asp-action="AddProject" class="btn btn-primary">Dodaj projekt</a></td>  
+            <td></td>
+            <td><a asp-action="AddCooperator" class="btn btn-primary">Dodaj współpracownika</a></td>
+
+        </tr>
+    </tbody>
+</table>
+

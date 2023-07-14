@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IList<IdentityUser>
+@{
+    ViewData["Title"] = "Lista współpracowników";
+}
+<h2 class="card-title">@ViewData["Title"]</h2>
+<p>@Html.ValidationSummary("", new { @class = "text-danger" })</p>
+<table class="table table-dark">
+    <thead>
+        <tr class="flex-row">
+            
+            <th>Email</th>
+            <th>Numer telefonu</th>
+            
+            <th>Usuń klienta</th>
+        </tr>
+    </thead>
+    <tbody class="table-striped">
+        @foreach (var item in Model)
+        {
+            
+                <tr class="flex-row">
+                    <td>@item.Email</td>
+                <td><form asp-action="UpdatePhoneNumber" role="form" method="post"><input type="hidden" name="UserId" value="@item.Id" /><label class="form-label" asp-for="@item.PhoneNumber">Numer telefonu</label><input class="form-control" name="PhoneNumber" asp-for="@item.PhoneNumber" /><button class="btn btn-success">Zaktualizuj numer telefonu</button></form></td>
+                <td><form asp-action="RemoveCooperatorConfirmation" role="form" method="post"><input type="hidden" name="UserId" value="@item.Id" /><button class="btn btn-danger">Usuń współpracownika</button></form></td>
+                </tr>
+            
+        }
+    </tbody>
+
+</table>
+<p></p>
+<a asp-action="AddCooperator" asp-controller="User" class="btn btn-primary">Dodaj współpracownika</a>

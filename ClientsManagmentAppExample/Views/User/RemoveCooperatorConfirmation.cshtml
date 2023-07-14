@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IdentityUser
+@{
+    ViewData["Title"] = "Potwierdź usunięcie klienta";
+}
+
+
+<h2 class="card-title"> @ViewData["Title"]</h2>
+
+<p>Aby usunąć użytkownika wpisz jego pełną nazwę, uwzględniając małe i wielkie litery oraz spacje</p>
+<form role="form" method="post" class="form-control" asp-controller="User">
+    <input type="hidden" asp-for="Id" name="UserId" />
+    <p>Nazwa współpracownika: @Model.UserName</p>
+    <label class="form-label" asp-for="UserName">Wpisz nazwę współpracownika</label>
+    <input class="input-group" asp-for="UserName" value="" name="UserName" required />
+    <p></p>
+    <button asp-action="RemoveClient" class="btn-danger">Usuń</button>
+
+</form>
+  <form role="form" method="post" class="form-control" asp-controller="User"> 
+      <button asp-action="GetCooperators" class="btn-primary">Zrezygnuj</button>
+      </form>
+

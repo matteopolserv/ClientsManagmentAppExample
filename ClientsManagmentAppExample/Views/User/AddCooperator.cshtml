@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IList<IdentityUser>
+@{
+    ViewData["Title"] = "Dodaj współpracownika";
+}
+
+<h2 class="card-title">@ViewData["Title"]</h2>
+<form asp-controller="User" role="form" method="post" class="form-control">
+    <div class="form-control">
+        <label for="UserId" class="form-label">Nazwa klienta</label>
+        <select name="UserId">
+           
+            @foreach (var user in Model)
+            {
+                <option value="@user.Id">@user.UserName</option>
+            }
+        </select>
+    </div>
+    <p></p>
+    <button type="submit" class="btn-success" asp-action="AddCooperator">Dodaj współpracownika</button>
+</form>
+<p></p>
+<form asp-controller="User" role="form" method="post" class="form-control">
+    <button type="submit" class="btn-primary" asp-action="UserDashboard">Powrót do panelu użytkownika</button>
+</form>
+

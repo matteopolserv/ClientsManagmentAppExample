@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model ClientModel
+
+@inject UserManager<IdentityUser> userManager;
+@{
+    var clients = await userManager.GetUsersInRoleAsync("client");
+}
+<h2 class="card-title">Dane klienta</h2>
+<form asp-controller="User" role="form" method="post" class="form-control">
+    <div class="form-control">
+        <label class="form-label" asp-for="ClientName">Nazwa klienta</label>
+        <input class="input-group" asp-for="ClientName" required/>
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="ClientEmail">Email klienta</label>
+        <input class="input-group" asp-for="ClientEmail" />
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="ClientPhone">Telefon klienta</label>
+        <input class="input-group" asp-for="ClientPhone" />
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="ClientAddress">Adres klienta</label>
+        <input class="input-group" asp-for="ClientAddress" />
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="NIP">NIP klienta</label>
+        <input class="input-group" asp-for="NIP" />
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="REGON">REGON klienta</label>
+        <input class="input-group" asp-for="REGON" />
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="Notices">Uwagi o kliencie</label>
+        <input class="input-group" asp-for="Notices" />
+    </div>
+    <div class="form-control">
+        <label asp-for="UserId">Przypisz klienta do użytkownika</label>
+        <select asp-for="UserId">
+            <option value=""></option>
+            @foreach(var client in clients)
+            {
+                <option value="@client.Id">@client.UserName</option>
+            }
+        </select>
+    </div>
+    
+    <p></p>
+    
+    <button type="submit" class="btn-success" asp-action="AddClient">Dodaj klienta</button>
+    
+    
+
+</form>
+<p></p>
+<form asp-controller="User" role="form" method="post" class="form-control">
+<button type="submit" class="btn-primary" asp-action="GetAllClients">Powrót do listy klientów</button>
+</form>

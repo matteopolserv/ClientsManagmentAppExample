@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CRM - Lotier</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/AuthPl.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src=https://lotier.pl/wp-content/uploads/2022/01/LOTIER-LOGO-PELNE-300x164.png width="225" height="123" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Strona domowa</a>
+                        </li>
+                       @* <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>*@
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ClientForm" asp-action="ClientInfoForm">Wypełnij formularz</a>
+                        </li>
+                        @if (User.IsInRole("user"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="UserDashboard">Panel użytkownika</a>
+                            </li>
+                        } 
+                        @if (User.IsInRole("client"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="ClientDashboard">Panel klienta</a>
+                            </li>
+                        } 
+                        @if (User.IsInRole("cooperator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Cooperator" asp-action="CooperatorDashboard">Panel współpracownika</a>
+                            </li>
+                        }
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3" style="margin-bottom: 250px;">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted" style="margin-top: 100px;">
+        <div class="container">
+            &copy; @DateTime.Now.Year -<a href="https://lotier.pl" target="_blank">Lotier.pl</a> - <a asp-area="" asp-controller="Home" asp-action="Privacy">Polityka prywatności</a>
+
+            @{
+                var cookie = Context.Request.Cookies.Where(x => x.Key == "consent");
+                string display = "none";
+                string opacity = "0";
+                if (cookie.Where(x => x.Value == "accepted").Count() == 0)
+                {
+                    display = "block";
+                    opacity = "1";
+                }
+                string curPath = Context.Request.Path.ToString();
+            }
+            <!-- Modal -->
+            <div class="modal fade" id="cookieconsent1" tabindex="-1" aria-labelledby="cookieconsentLabel1" aria-hidden="true" data-mdb-backdrop="static" data-mdb-keyboard="false" style="display: @display; opacity: @opacity">
+                <div class="modal-dialog modal-sm d-flex justify-content-center">
+                    <div class="modal-content text-center">
+                        <div class="modal-header d-flex justify-content-center">
+                            <h5 class="modal-title text-primary" id="cookieconsentLabel1" style="margin-top: 10%;">Cookies i polityka prywatności</h5>
+                        </div>
+                        <div class="modal-body p-4">
+                            Ta strona korzysta z cookies, aby poprawić funkcjonalność i umożliwić poprawne działanie. Korzystając z serwisu, wyrażasz zgodę na naszą politykę prywatności. Jeśli nie wyrażasz zgody na używanie cookies, możesz opuścić stronę lub zablokować cookies w swojej przeglądarce. <a href="https://allaboutcookies.org/" target="_blank">Więcej o cookies</a>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            @*<a type="button" class="btn btn-outline-primary" href="https://lotier.pl" target="_blank">Polityka prywatności</a>*@
+                            <form asp-action="SetCookie" asp-controller="Home" method="post">
+                                <input type="hidden" name="Key" value="consent" />
+                                <input type="hidden" name="Value" value="accepted" />
+                                <input type="hidden" name="CurPath" value="@curPath" />
+                                <input type="hidden" name="Expires" value="60" />
+                                <button type="submit" class="btn btn-primary" data-mdb-dismiss="modal" id="btnconfirm">Akceptuję politykę prywatności</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                toolbar: {
+                    removeItems: [
+                        'uploadImage'
+                    ],
+                    shouldNotGroupWhenFull: true
+                }
+
+
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor2'), {
+                toolbar: {
+                    removeItems: [
+                        'uploadImage'
+                    ],
+                    shouldNotGroupWhenFull: true
+                }
+
+
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+     <script>
+        ClassicEditor
+            .create(document.querySelector('#editor3'), {
+                toolbar: {
+                    removeItems: [
+                        'uploadImage'
+                    ],
+                    shouldNotGroupWhenFull: true
+                }
+
+
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+
+
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

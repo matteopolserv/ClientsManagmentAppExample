@@ -1,0 +1,187 @@
+﻿@using ClientsManagmentApp.Interfaces;
+@using ClientsManagmentApp.Models;
+@using Microsoft.AspNetCore.Identity;
+@model ProjectModel
+@{
+    ViewData["Title"] = "Dane projektu";
+}
+
+@inject ICooperatorRepository cooperatorRepository
+@inject IClientRepository clientRepository
+@inject UserManager<IdentityUser> userManager
+@inject IFileService fileService
+
+
+<h2 class="card-title">@ViewData["Title"]</h2>
+<p>Created: @Model.CreatedDate; Created by: @Model.CreatedBy</p>
+<p>Last updated: @Model.UpdatedDate; Updated by: @Model.UpdatedBy</p>
+
+
+    <div class="form-control">
+    <p>Nazwa projektu: @Model.ProjectName</p>
+      
+    </div>
+    
+    <div class="form-control">
+    <p>Termin wykonania: @Model.DeadLine</p>
+        
+    </div>
+   
+    <div class="form-control">
+    <p>Status projektu: @Model.ProjectStatus</p>
+        
+    </div>
+    <div class="form-control">
+    <p>Opis projektu: @Model.ProjectDescription</p>
+       
+    </div>
+<form role="form" method="post" class="form-control">
+    <input class="input-group" name="ProjectId" asp-for="ProjectId" value="@Model.ProjectId" type="hidden" />
+    <p></p>
+    
+    <button type="submit" class="btn-primary" asp-controller="Cooperator" asp-action="GetProjectCredentials">Zobacz loginy i hasła</button>
+    <button type="submit" class="btn-primary" asp-controller="Cooperator" asp-action="GetProjectClientCredentials">Zobacz loginy i hasła dodane przez klienta</button>
+    
+    <button type="submit" class="btn-secondary" asp-controller="Cooperator" asp-action="GetAllCooperatorProjects">Powrót do listy projektów</button>
+    <p></p>
+    <p></p>
+   
+
+</form>
+
+<div class="container-fluid" style="margin-top: 5%">
+    <h3 class="card-subtitle">Pliki - komunikacja wewnętrzna</h3>
+    <p></p>
+    @{
+        FileModel file = new()
+            {
+                ProjectId = Model.ProjectId,
+                Uploader = "user"
+            };
+        var files = await fileService.GetProjectFiles(file);
+
+    }
+    @if (files.Count() > 0)
+    {
+        <h4 class="card-subtitle">Lista plików</h4>
+        <ul class="list-group">
+            @foreach (var f in files)
+            {
+                <li class="list-group-item"><form method="post" asp-controller="Cooperator"><input name="ProjectId" type="hidden" value="@Model.ProjectId" /><input type="hidden" name="FilePath" value="@f.FilePath" /><input type="hidden" name="FileName" value="@f.FileName" /><button asp-action="DownloadFile" class="btn-secondary" type="submit"> @f.FileName </button></form></li>
+            }
+
+        </ul>
+        <p></p>
+    }
+    <h4 class="card-subtitle">Dodaj plik</h4>
+    <form enctype="multipart/form-data" method="post" asp-action="UploadFile" asp-controller="Cooperator">
+        <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
+        <label for="UploadFiles" class="form-label">Wybierz plik z dysku </label>
+        <input class="form-control" type="file" name="UploadFiles" required multiple />
+        <p></p>
+        <button type="submit" class="btn-success">Wgraj Plik</button>
+    </form>
+</div>
+<p></p>
+<div class="container" style="margin-top: 5%;">
+    <h3 class="card-subtitle">Pliki - komunikacja z klientem</h3>
+    <p></p>
+    @{
+        FileModel clientFile = new()
+            {
+                ProjectId = Model.ProjectId,
+                Uploader = "client"
+            };
+        var clientFiles = await fileService.GetProjectFiles(clientFile);
+
+    }
+    @if (clientFiles.Count() > 0)
+    {
+        <h4 class="card-subtitle">Lista plików</h4>
+        <ul class="list-group">
+            @foreach (var f in clientFiles)
+            {
+                <li class="list-group-item"><form method="post" asp-controller="Cooperator"><input name="ProjectId" type="hidden" value="@Model.ProjectId" /><input type="hidden" name="FilePath" value="@f.FilePath" /><input type="hidden" name="FileName" value="@f.FileName" /><button asp-action="DownloadClientFile" class="btn-secondary" type="submit"> @f.FileName </button><span>    </span></form></li>
+            }
+
+        </ul>
+        <p></p>
+    }
+    <h4 class="card-subtitle">Dodaj plik</h4>
+    <form enctype="multipart/form-data" method="post" asp-action="UploadClientFile" asp-controller="Cooperator">
+        <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
+        <label for="UploadFiles" class="form-label">Wybierz plik z dysku </label>
+        <input class="form-control" type="file" name="UploadFiles" required multiple />
+        <p></p>
+        <button type="submit" class="btn-success">Wgraj Plik</button>
+    </form>
+</div>
+<p></p>
+<div class="container" style="margin-top: 5%;">
+    <h3 class="card-subtitle">Aktualizacje - komunikacja wewnętrzna</h3>
+    <p></p>
+    @{
+        var projectUpdates = await cooperatorRepository.GetUpdatesAsync(Model.ProjectId);
+        var curUserId = userManager.GetUserId(Context.User);
+    }
+    @if (projectUpdates.Count() > 0)
+    {
+        @foreach (var update in projectUpdates)
+        {
+            <div class="list-group" style="border-width: 1px; border-style: solid;">
+                <p>Created by: @update.CreatedBy Created: @update.CreatedDate Last update: @update.UpdatedDate</p>
+                <p>@Html.Raw(update.Description)</p>
+                @if (update.CreatedById == curUserId && update.CreatedDate.Value.AddDays(1) > DateTime.Now)
+                {
+                    <form asp-controller="Cooperator" role="form" method="post">
+                        <input type="hidden" name="Id" value="@update.UpdateId" />
+                        <button asp-action="EditUpdate" type="submit" class="btn-primary">Edytuj aktualizację</button>
+                        <button asp-action="RemoveUpdate" type="submit" class="btn-danger">Usuń aktualizację</button>
+                    </form>
+                }
+            </div>
+        }
+    }
+    <form asp-action="AddUpdate" asp-controller="Cooperator" role="form" method="post">
+        <label class="form-label" for="Description"></label>
+        <textarea id="editor" name="Description" class="form-control" required><p></p></textarea>
+        <input value="@Model.ProjectId" name="Id" type="hidden" />
+        <p></p>
+        <button type="submit" class="btn-success">Dodaj aktualizację - komunikacja wewnętrzna</button>
+    </form>
+</div>
+<p></p>
+<p></p>
+<div class="container" style="margin-top: 5%;">
+    <h3 class="card-subtitle">Komunikacja z klientem - aktualizacje</h3>
+    <p></p>
+    @{
+        var projectClientUpdates = await clientRepository.GetClientUpdatesAsync(Model.ProjectId);
+
+    }
+    @if (projectClientUpdates.Count() > 0)
+    {
+        @foreach (var update in projectClientUpdates)
+        {
+            <div class="list-group" style="border-width: 1px; border-style: solid;">
+                <p>Created by: @update.CreatedBy Created: @update.CreatedDate Last update: @update.UpdatedDate</p>
+                <p>@Html.Raw(update.Description)</p>
+                @if (update.CreatedById == curUserId && update.CreatedDate.Value.AddDays(1) > DateTime.Now)
+                {
+                    <form asp-action="EditUpdate" asp-controller="Client" role="form" method="post">
+                        <input type="hidden" name="UpdateId" value="@update.UpdateId" />
+                        <button asp-action="EditUpdate" type="submit" class="btn-primary">Edytuj aktualizację</button>
+                        <button asp-action="RemoveUpdate" type="submit" class="btn-danger">Usuń aktualizację</button>
+                    </form>
+                }
+            </div>
+        }
+    }
+    <form asp-action="AddUpdate" asp-controller="Client" role="form" method="post">
+        <label class="form-label" for="Description"></label>
+        <textarea id="editor2" name="Description" class="form-control" required><p></p></textarea>
+        <input value="@Model.ProjectId" name="ProjectId" type="hidden" />
+        <p></p>
+        <button type="submit" class="btn-success">Dodaj aktualizację - komunikacja z Klientem</button>
+    </form>
+</div>

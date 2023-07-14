@@ -1,0 +1,24 @@
+﻿@model UpdatesModel
+@{
+    ViewData["Title"] = "Edytuj aktualizację";
+}
+
+<h2 class="card-title">@ViewData["Title"]</h2>
+
+<form  asp-controller="User" role="form" method="post">
+    <div class="form-control">
+        <label asp-for="Description" class="form-label">Treść aktualizacji</label>
+        <textarea id="editor" asp-for="Description" name="Description" class="form-control" required></textarea>
+        <input type="hidden" value="@Model.UpdateId" name="Id"/>
+        
+        <p></p>
+        <button asp-action ="UpdateUpdate" type="submit" class="btn-success">Zapisz aktualizację</button>
+
+    </div>
+</form>
+
+<form  asp-controller="User" role="form" method="post">
+    <input type="hidden" value="@Model.ProjectId" name="ProjectId" />
+<button asp-action ="GetProjectDetails" type="submit" class="btn-secondary">Powrót do projektu bez zapisywania</button>
+</form>
+

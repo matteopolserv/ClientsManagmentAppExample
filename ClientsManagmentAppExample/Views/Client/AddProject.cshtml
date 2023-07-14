@@ -1,0 +1,42 @@
+﻿@using ClientsManagmentAppExample.Interfaces;
+
+@model ProjectModel
+@{
+    ViewData["Title"] = "Dodaj projekt";
+}
+@inject IUserRepository userRepository
+
+@{
+    var clientsList = await userRepository.GetAllClientsAsync();
+}
+
+<h2 class="title">@ViewData["Title"]</h2>
+
+<form asp-controller="Client" role="form" method="post" class="form-control">
+    <div class="form-control">
+        <label class="form-label" asp-for="ProjectName">Nazwa projektu</label>
+        <input class="input-group" asp-for="ProjectName" />
+    </div>
+    
+    <div class="form-control">
+        <label class="form-label" asp-for="DeadLine">Termin wykonania</label>
+        <input class="input-group" asp-for="DeadLine" />
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="ProjectStatus">Status projektu</label>
+        <input class="input-group" asp-for="ProjectStatus" />
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="ProjectDescription">Opis projektu</label>
+        <textarea class="form-control-lg" asp-for="ProjectDescription"></textarea>
+    </div>
+
+    <input class="input-group" asp-for="ProjectId" type="hidden" />
+    <p></p>
+    <button type="submit" class="btn-success" asp-action="AddProject">Dodaj projekt</button>
+
+    <button type="submit" class="btn-primary" asp-action="ClientDashboard">Powrót do panelu klienta</button>
+    <p></p>
+    <p></p>
+
+</form>

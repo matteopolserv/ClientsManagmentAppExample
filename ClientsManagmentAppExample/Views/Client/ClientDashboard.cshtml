@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Panel użytkownika";
+}
+
+<h2 class="card-title">@ViewData["Title"]</h2>
+@if (!ViewData.ModelState.IsValid && ViewData.ModelState[""].Errors.Count() > 0)
+{
+    <p class="text-danger">@ViewData.ModelState[""].Errors.First()</p>
+}
+
+<p><a class="btn btn-primary" asp-action="EditClientInfo">Edytuj swoje dane</a></p>
+<p><a class="btn btn-primary" asp-action="AddProject">Dodaj projekt</a></p>
+<p><a class="btn btn-primary" asp-action="ClientProjectsList">Zobacz listę projektów</a></p>

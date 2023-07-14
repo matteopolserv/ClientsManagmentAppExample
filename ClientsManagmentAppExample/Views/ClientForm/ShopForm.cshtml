@@ -1,0 +1,62 @@
+﻿@model FormModel
+
+
+<h2 class="card-title">Informacje na temat sklepu cz 1/2</h2>
+
+<form asp-controller="ClientForm" role="form" method="post" class="form-control">
+
+    <input asp-for="ClientName" type="hidden" />
+    <input asp-for="ClientEmail" type="hidden" />
+    <input asp-for="ClientPhone" type="hidden" />
+    <input asp-for="Service" type="hidden" />
+    <input asp-for="Deadline" type="hidden" />
+
+
+    <input asp-for="WebSiteAddress" type="hidden" />
+
+    <label asp-for="HasWebSite" class="form-label">Czy posiadasz już sklep internetowy?</label>
+    <input type="radio" asp-for="HasWebSite" value="false" class="form-check-input" /> Nie
+    <input type="radio" asp-for="HasWebSite" value="true" class="form-check-input" /> Tak <br />
+
+    <p></p>
+    <input asp-for="DomainName" type="hidden" />
+
+    <label asp-for="HasDomain" class="form-label">Czy posiadasz wykupioną domenę? </label>
+
+    <input type="radio" asp-for="HasDomain" value="false" class="form-check-input" /> Nie
+    <input type="radio" asp-for="HasDomain" value="true" class="form-check-input" /> Tak <br />
+    <p></p>
+
+    <input asp-for="HostingName" type="hidden" />
+
+    <label asp-for="HasHosting" class="form-label"> Czy posiadasz wykupioną domenę? </label>
+
+    <input type="radio" asp-for="HasHosting" value="false" class="form-check-input" /> Nie
+    <input type="radio" asp-for="HasHosting" value="true" class="form-check-input" /> Tak <br />
+
+
+    <p></p>
+    <input asp-for="VisualProjectDesc" type="hidden" />
+
+    <label asp-for="HasVisualProject" class="form-label"> Czy posiadasz materiały graficzne? </label><br />
+
+    <input type="radio" asp-for="HasVisualProject" value="no" class="form-check-input" /> Nie, proszę o opracowanie szaty graficznej<br />
+    <input type="radio" asp-for="HasVisualProject" value="owngraphic" class="form-check-input" /> Nie, ale mam własnego grafika <br />
+    <input type="radio" asp-for="HasVisualProject" value="tamplate" class="form-check-input" /> Nie, chcę skorzystać z już wybranego szablonu <br />
+    <input type="radio" asp-for="HasVisualProject" value="yes" class="form-check-input" /> Tak, mam gotowy projekt graficzny <br />
+
+
+    <p></p>
+
+
+    <input type="hidden" asp-for="ShopDesc" />
+    
+    <input type="hidden" asp-for="Notices" />
+
+    <p></p>
+    <button asp-action="ClientInfoForm" class="btn-primary" type="submit">Wstecz</button>
+    <button asp-action="ShopForm2" class="btn-primary" type="submit">Kontynuuj</button>
+
+
+</form>
+

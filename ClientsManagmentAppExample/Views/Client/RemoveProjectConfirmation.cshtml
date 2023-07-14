@@ -1,0 +1,20 @@
+﻿@model ProjectModel
+@{
+    ViewData["Title"] = "Potwierdź usunięcie projektu";
+}
+
+
+<h2 class="card-title"> @ViewData["Title"]</h2>
+
+<p>Aby usunąć projekt wpisz jego pełną nazwę, uwzględniając małe i wielkie litery oraz spacje</p>
+<form role="form" method="post" class="form-control" asp-controller="Client">
+    <input type="hidden" asp-for="ClientId" name="Id" />
+    <p>Nazwa projektu: @Model.ProjectName</p>
+    <label class="form-label" asp-for="ProjectName">Wpisz nazwę projektu</label>
+    <input class="input-group" asp-for="ProjectName" name="ProjectName" required />
+    <input type="hidden" asp-for="ProjectId" name="ProjectId" />
+    <p></p>
+    <button asp-action="RemoveProject" class="btn-danger">Usuń</button>
+    <button asp-action="ClientProjectsList" class="btn-primary">Zrezygnuj</button>
+
+</form>

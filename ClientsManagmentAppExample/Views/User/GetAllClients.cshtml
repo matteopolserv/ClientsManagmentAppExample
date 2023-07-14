@@ -1,0 +1,35 @@
+﻿@model List<ClientModel>
+@{
+    ViewData["Title"] = "Lista klientów";
+}
+<h2 class="card-title">@ViewData["Title"]</h2>
+<p>@Html.ValidationSummary("", new { @class = "text-danger" })</p>
+<table class="table table-dark">
+    <thead>
+        <tr class="flex-row">
+            <th>Imię i nazwisko/Nazwa</th>
+            <th>Email</th>
+            <th>Numer telefonu</th>
+            <th>Zobacz szczegóły</th>
+            <th>Usuń klienta</th>
+        </tr>
+    </thead>
+    <tbody class="table-striped">
+        @foreach (var item in Model)
+        {
+            if (item.IsVisible == true)
+            {
+                <tr class="flex-row">
+                <td>@item.ClientName</td>
+                <td>@item.ClientEmail</td>
+                <td>@item.ClientPhone</td>
+                <td><form asp-action="GetClientDetails" role="form" method="get"><input type="hidden" name="Id" value="@item.ClientId" /><button class="btn btn-primary">Szczegóły</button></form></td>
+                <td><form asp-action="RemoveClientConfirmation" role="form" method="get"><input type="hidden" name="Id" value="@item.ClientId" /><button class="btn btn-danger">Usuń</button></form></td>
+            </tr>
+            }
+        }
+    </tbody>
+
+</table>
+<p></p>
+<a asp-action ="AddClient" asp-controller="User" class="btn btn-primary">Dodaj klienta</a>

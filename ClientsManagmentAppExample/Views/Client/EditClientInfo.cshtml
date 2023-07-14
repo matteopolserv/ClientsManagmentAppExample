@@ -1,0 +1,35 @@
+﻿@model ClientModel
+@{
+    ViewData["Title"] = "Eydtuj informacje";
+}
+
+
+<h2 class="card-title">@ViewData["Title"]</h2>
+
+
+<form asp-action="BecomeClient" asp-controller="Client" role="form" method="post">
+     <div class="form-control">
+        <label class="form-label" asp-for="ClientName">Imię i nazwisko / Nazwa </label>
+        <input class="input-group" asp-for="ClientName" required/>
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="ClientEmail">Adres Email </label>
+        <input class="input-group" asp-for="ClientEmail" />
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="ClientPhone">Telefon</label>
+        <input class="input-group" asp-for="ClientPhone" />
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="ClientAddress">Adres</label>
+        <input class="input-group" asp-for="ClientAddress" />
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="NIP">NIP </label>
+        <input class="input-group" asp-for="NIP" />
+    </div>
+    <input type="hidden" asp-for="ClientId" />
+   <p></p>
+    <button type="submit" asp-action="UpdateClientInfo" class="btn-success">Zapisz zmiany</button>
+    <button type="submit" asp-action="ClientDashboard" class="btn-primary">Powrót do panelu użytkownika</button>
+   </form>

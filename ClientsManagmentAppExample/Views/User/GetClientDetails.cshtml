@@ -1,0 +1,52 @@
+﻿@model ClientModel
+
+@{
+    ViewData["Title"] = "Dane klienta";
+}
+
+<h2 class="card-title">@ViewData["Title"]</h2>
+
+<p>Created: @Model.CreatedDate; Created by: @Model.CreatedBy</p>
+<p>Last updated: @Model.UpdatedDate; Updated by: @Model.UpdatedBy</p>
+
+<form asp-controller="User" role="form" method="post" class="form-control">
+    <div class="form-control">
+        <label class="form-label" asp-for="ClientName">Nazwa klienta</label>
+        <input class="input-group" asp-for="ClientName"/>
+    </div>
+    <div class="form-control">
+        <label class="form-label" asp-for="ClientEmail">Email klienta</label>
+        <input class="input-group" asp-for="ClientEmail" />
+    </div> 
+    <div class="form-control">
+        <label class="form-label" asp-for="ClientPhone">Telefon klienta</label>
+        <input class="input-group" asp-for="ClientPhone" />
+    </div> 
+    <div class="form-control">
+        <label class="form-label" asp-for="ClientAddress">Adres klienta</label>
+        <input class="input-group" asp-for="ClientAddress" />
+    </div> 
+    <div class="form-control">
+        <label class="form-label" asp-for="NIP">NIP klienta</label>
+        <input class="input-group" asp-for="NIP" />
+    </div> 
+    <div class="form-control">
+        <label class="form-label" asp-for="REGON">REGON klienta</label>
+        <input class="input-group" asp-for="REGON" />
+    </div> 
+    <div class="form-control">
+        <label class="form-label" asp-for="Notices">Uwagi o kliencie</label>
+        <input class="input-group" asp-for="Notices" />
+    </div> 
+    
+        
+        <input class="input-group" asp-for="ClientId" type="hidden" />
+        <input class="input-group" asp-for="UserId" type="hidden" />
+        <p></p>
+        <button type="submit" class="btn-success" asp-action="UpdateClient">Zaktualizuj dane klienta</button>
+        <button type="submit" class="btn-senodary" asp-action="GetAllClients">Powrót do listy klientów</button>
+        <p></p>
+        <p></p>
+        <button type="submit" class="btn-danger" asp-action="RemoveClientConfirmation" id="ClientRemove">Usuń klienta</button>
+    
+</form>

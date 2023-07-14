@@ -1,0 +1,50 @@
+﻿@model FormModel
+
+<h2 class="card-title">Informacje na temat aplikacji desktopowej</h2>
+
+
+<form asp-controller="ClientForm" method="post" role="form" class="form-control">
+
+    <input asp-for="ClientName" type="hidden" />
+    <input asp-for="ClientEmail" type="hidden" />
+    <input asp-for="ClientPhone" type="hidden" />
+    <input asp-for="Deadline" type="hidden" />
+    <input type="hidden" asp-for="Service" />
+
+
+   <p></p>
+
+  
+   
+      
+    <label asp-for="OperatingSystem" class="form-control">Proszę podać na jakim systemie operacyjnym ma działać aplikacja (Windows, Linux, MacOs, Aplikacja międzyplatformowa itd.)</label>
+    <input asp-for="OperatingSystem" class="form-control" />
+    <p></p>
+    <label asp-for="Language" class="form-control">Jeśli mają Państwo preferencje, proszę podać preferowany język programowania, w którym ma zostać napisana aplikacja</label>
+    <input asp-for="Language" class="form-control" />
+    <p></p>
+    <label asp-for="DeskForm" class="form-control">Czy ma być to aplikacja konsolowa czy okienkowa</label>
+    <input type="radio" value="Konsolowa" asp-for="DeskForm" class="form-check-input" /> Konsolowa
+    <input type="radio" value="Okienkowa" asp-for="DeskForm" class="form-check-input" /> Okienkowa
+    <p></p>
+      <label asp-for="VisualProjectDesc" class="form-label">Proszę opisać oczekiwania wobec projektu graficznego jeśli ma być to aplikacja okienkowa</label>
+    <textarea id="editor" asp-for="VisualProjectDesc" class="form-control"><p></p></textarea>
+
+
+    <p></p>
+
+
+    <label asp-for="DeskAppDesc" class="form-label">
+        Proszę o dokładny opis funkcji i sruktury aplikacji. Czy ma posiadać system autoryzacji użytkowników, wszystkie funkcje i dostęp do nich w zależności od uprawnień użytkownika, integracji (w tym płatności, synchronizacji z innymi serwisami, np. do wysyłania SMSów, pobierania danych ze źródeł zewnętrznych), generowania plików(raportów, faktur, podsumowań), wykresów, wysyłania powiadomień w zależeności od zdarzenia, przybliżonej ilości generowanych emaili, a zwłaszcza FUNKCJI CHARAKTERYSTYCZNYCH I NIETYPOWYCH w celu przedstawienia Państwu najlepiej dopasowanej oferty<br />
+
+        <textarea id="editor2" asp-for="DeskAppDesc" class="form-control"><p></p></textarea>
+    </label>
+
+    <p></p>
+    <label asp-for="Notices" class="form-label">Uwagi</label>
+    <textarea id="editor3" asp-for="Notices" class="form-control"><p></p></textarea>
+    <p></p>
+    <button type="submit" class="btn-primary" asp-action="ClientInfoForm" asp-controller="ClientForm">Wstecz</button>
+    <button type="submit" class="btn-primary" asp-action="DeskAppFormSummary" asp-controller="ClientForm">Podusmowanie</button>
+
+</form>

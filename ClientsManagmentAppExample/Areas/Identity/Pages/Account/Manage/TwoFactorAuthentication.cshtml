@@ -1,0 +1,71 @@
+﻿@page
+@using Microsoft.AspNetCore.Http.Features
+@model TwoFactorAuthenticationModel
+@{
+    ViewData["Title"] = "Uwierzytelnianie dwuskładnikowe (2FA)";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<h3>@ViewData["Title"]</h3>
+@{
+    var consentFeature = HttpContext.Features.Get<ITrackingConsentFeature>();
+    @if (consentFeature?.CanTrack ?? true)
+    {
+        @if (Model.Is2faEnabled)
+        {
+            if (Model.RecoveryCodesLeft == 0)
+            {
+                <div class="alert alert-danger">
+                    <strong>Nie masz żadnych kodó zapasowych.</strong>
+                    <p>Muisz <a asp-page="./GenerateRecoveryCodes">wygenerować nowy zestaw kodów zpasowych</a> zanim będziesz mógł zalogować się za pomocą kodu zapasowego.</p>
+                </div>
+            }
+            else if (Model.RecoveryCodesLeft == 1)
+            {
+                <div class="alert alert-danger">
+                    <strong>Został ci tylko 1 kod zapasowy.</strong>
+                    <p>Możesz <a asp-page="./GenerateRecoveryCodes">wygenerować nowy zestaw kodów zpasowych</a>.</p>
+                </div>
+            }
+            else if (Model.RecoveryCodesLeft <= 3)
+            {
+                <div class="alert alert-warning">
+                    <strong>Masz @Model.RecoveryCodesLeft kodó zapasowych.</strong>
+                    <p>Powinieneń <a asp-page="./GenerateRecoveryCodes">wygenerować nowy zestaw kodów zpasowych</a>.</p>
+                </div>
+            }
+
+            if (Model.IsMachineRemembered)
+            {
+                <form method="post" style="display: inline-block">
+                    <button type="submit" class="btn btn-primary">Zapomnij tą przeglądarkę </button>
+                </form>
+            }
+            <a asp-page="./Disable2fa" class="btn btn-primary">Wyłącz 2FA</a>
+            <a asp-page="./GenerateRecoveryCodes" class="btn btn-primary">Zresetuj kody zapasowe</a>
+        }
+
+        <h4>Authenticator app</h4>
+        @if (!Model.HasAuthenticator)
+        {
+            <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Dodaj aplikację TOTP</a>
+        }
+        else
+        {
+            <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Ustaw aplikację TOTP</a>
+            <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-primary">Zresetuj aplikację TOTP</a>
+        }
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            <strong>Polityka cookies i prywatności nie została zaakceptowana.</strong>
+            <p>Musisz zaakcetopwać politykę prywtności przed włączenie 2fa.</p>
+        </div>
+    }
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,66 @@
+﻿@model FormModel
+
+
+<h2 class="card-title">Dane klienta</h2>
+<p>@Html.ValidationSummary("", new { @class = "text-danger" })</p>
+
+<form asp-controller="ClientForm" asp-action="ServiceForm" method="post" role="form" class="form-control">
+
+<input asp-for="WebSiteAddress" type="hidden" />
+    <input asp-for="DomainName" type="hidden" />
+    <input asp-for="HostingName" type="hidden" />
+    <input asp-for="VisualProjectDesc" type="hidden" />
+    <input type="hidden" asp-for="CMSDesc" />
+    <input type="hidden" asp-for="Notices" />
+
+    <input asp-for="HasWebSite" type="hidden" />
+    <input asp-for="HasDomain" type="hidden" />
+    <input asp-for="HasHosting" type="hidden" />
+    <input asp-for="HasVisualProject" type="hidden" />
+    <input type="hidden" asp-for="WebSiteProfile" />
+
+    <input type="hidden" asp-for="ShopDesc" />
+
+    <input type="hidden" asp-for="WebAppDesc" />
+
+    <input type="hidden" asp-for="DeskAppDesc" />
+    <input type="hidden" asp-for="Language" />
+    <input type="hidden" asp-for="DeskForm" />
+    <input type="hidden" asp-for="OperatingSystem" />
+
+    <input type="hidden" asp-for="MobileAppDesc" />
+
+    <label asp-for="Service" class="form-label">Proszę wybrać rodzaj usługi: </label>
+    <p></p>    
+    <input type="radio" value="SiteWeb" asp-for="Service" class="form-check-input" /> Budowa strony internetowej
+    <p></p>
+    <input type="radio" value="Shop" asp-for="Service" class="form-check-input" /> Budowa sklepu internetowego
+    <p></p>
+    <input type="radio" value="WebApp" asp-for="Service" class="form-check-input" /> Budowa aplikacji internetowej
+    <p></p>
+    <input type="radio" value="DeskApp" asp-for="Service" class="form-check-input" /> Budowa aplikacji desktopowej
+    <p></p>
+    <input type="radio" value="MobileApp" asp-for="Service" class="form-check-input" /> Budowa aplikacja mobilnej
+   @* <p></p>
+    <input type="radio" value="Repair" asp-for="Service" class="form-check-input" /> Naprawa strony lub aplikacji
+    <p></p>
+    <input type="radio" value="Upgrade" asp-for="Service" class="form-check-input" /> Rozbudowa strony lub aplikacji
+*@
+<p></p>
+<label asp-for="ClientName" class="form-label">Imię i nazwisko osoby do kontaktu lub nazwa firmy</label>
+<input asp-for="ClientName" class="form-control" required />
+    
+<label asp-for="ClientEmail" class="form-label">Adres email</label>
+<input asp-for="ClientEmail" class="form-control" required />
+
+<label asp-for="ClientPhone" class="form-label">Numer telefonu</label>
+<input asp-for="ClientPhone" class="form-control" required />
+
+<label asp-for="Deadline" class="form-label">Termin wykonania projektu</label>
+<input asp-for="Deadline" class="form-control" required />
+
+<p></p>
+    <button type="submit" class="btn-primary">Dalej</button>
+    
+
+</form>

@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IList<IdentityUser>
+@{
+    ViewData["Title"] = "Przypisz współpracownika do projektu";
+}
+
+<h2 class="card-title">@ViewData["Title"]</h2>
+<form asp-controller="User" role="form" method="post" class="form-control">
+    <div class="form-control">
+        <label for="CooperatorId" class="form-label">Nazwa współpracownika</label>
+        <select name="CooperatorId">
+
+            @foreach (var user in Model)
+            {
+                <option value="@user.Id">@user.UserName</option>
+            }
+        </select>
+    </div>
+    <p></p>
+    <input type="hidden" name="ProjectId" value="@TempData["ProjectId"]"/>
+    <button type="submit" class="btn-success" asp-action="AssignCooperatorToProject">Przypisz współpracownika do projektu</button>
+</form>
+<p></p>
+<form asp-controller="User" role="form" method="post" class="form-control">
+    <button type="submit" class="btn-primary" asp-action="UserDashboard">Powrót do panelu użytkownika</button>
+</form>
+

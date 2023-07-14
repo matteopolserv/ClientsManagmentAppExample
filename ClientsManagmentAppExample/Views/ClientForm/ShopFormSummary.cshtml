@@ -1,0 +1,75 @@
+﻿@model FormModel
+
+<h2 class="card-title"> Podsumowanie</h2>
+<p>Usługa: Budowa sklepu internetowego</p>
+<p>Imię i nazwisko osoby do kontaktu lub nazwa firmy: @Model.ClientName</p>
+<p>Adres Email: @Model.ClientEmail</p>
+<p>Telefon: @Model.ClientPhone</p>
+@if (Model.HasWebSite == true)
+{
+    <p>Adres obecnej strony: @Model.WebSiteAddress</p>
+}
+@if (Model.HasDomain == true)
+{
+    <p>Nazwa i operator domeny: @Model.DomainName</p>
+}
+@if (Model.HasHosting == true)
+{
+    <p>Dostawca i pakiet hostingowy: @Model.HostingName</p>
+}
+<p>Projekt graficzny: @Html.Raw(Model.VisualProjectDesc)</p>
+
+<p>Opis: @Html.Raw(Model.ShopDesc)</p>
+<p>Termin wykonania: @Model.Deadline</p>
+<p>Uwagi: @Html.Raw(Model.Notices)</p>
+<p></p>
+
+<form role="form" method="post" class="form-control">
+    <input asp-for="ClientName" type="hidden" />
+    <input asp-for="ClientEmail" type="hidden" />
+    <input asp-for="ClientPhone" type="hidden" />
+    <input asp-for="Service" type="hidden" />
+    <input asp-for="Deadline" type="hidden" />
+    <input asp-for="WebSiteAddress" type="hidden" />
+    <input asp-for="DomainName" type="hidden" />
+    <input asp-for="HostingName" type="hidden" />
+    <input asp-for="VisualProjectDesc" type="hidden" />
+    <input type="hidden" asp-for="ShopDesc" />
+    <input type="hidden" asp-for="Notices" />
+
+    <input asp-for="HasWebSite" type="hidden" />
+    <input asp-for="HasDomain" type="hidden" />
+    <input asp-for="HasHosting" type="hidden" />
+    <input asp-for="HasVisualProject" type="hidden" />
+   
+    <input type="hidden" asp-for="Service" />
+    <p></p>
+    <label for="Consent">Wyrażam zgodę na przetwarzanie danych osobowych zgodnie z <a href="https://crm.lotier.pl/Home/Privacy/" target="_blank"> polityką prywatności</a></label>
+    
+    <input type="checkbox" name="Consent" value="true"  required />
+    
+    <button type="submit" class="btn-primary" asp-controller="ClientForm" asp-action="SaveForm">Wyślij formularz</button>
+</form>
+<form role="form" method="post" class="form-control">
+    <input asp-for="ClientName" type="hidden" />
+    <input asp-for="ClientEmail" type="hidden" />
+    <input asp-for="ClientPhone" type="hidden" />
+    <input asp-for="Service" type="hidden" />
+    <input asp-for="Deadline" type="hidden" />
+    <input asp-for="WebSiteAddress" type="hidden" />
+    <input asp-for="DomainName" type="hidden" />
+    <input asp-for="HostingName" type="hidden" />
+    <input asp-for="VisualProjectDesc" type="hidden" />
+    <input type="hidden" asp-for="ShopDesc" />
+    <input type="hidden" asp-for="Notices" />
+
+    <input asp-for="HasWebSite" type="hidden" />
+    <input asp-for="HasDomain" type="hidden" />
+    <input asp-for="HasHosting" type="hidden" />
+    <input asp-for="HasVisualProject" type="hidden" />
+   
+    <input type="hidden" asp-for="Service" />
+       
+    <button type="submit" class="btn-primary" asp-controller="ClientForm" asp-action="ClientInfoForm">Popraw formularz</button>
+</form>
+

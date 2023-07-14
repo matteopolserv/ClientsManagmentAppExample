@@ -1,0 +1,139 @@
+﻿@model FormModel
+@{
+    ViewData["Title"] = "Szczegóły formularza";
+}
+
+<h2 class="card-title">Szczegóły formularza</h2>
+<p> </p>
+@if (Model.Service.Equals("DeskApp")){
+<p>Usługa: Budowa aplikacji desktopowej</p>
+<p>Imię i nazwisko osoby do kontaktu lub nazwa firmy: @Model.ClientName</p>
+<p>Adres Email: @Model.ClientEmail</p>
+<p>Telefon: @Model.ClientPhone</p>
+<p>System operacyjny: @Model.OperatingSystem</p>
+<p>Język programowania: @Model.Language</p>
+<p>Aplikacja konsolowa czy okienkowa: @Model.DeskForm</p>
+
+<p>Projekt graficzny: @Model.VisualProjectDesc</p>
+
+<p>Opis: @Model.DeskAppDesc</p>
+<p>Termin wykonania: @Model.Deadline</p>
+<p>Uwagi: @Model.Notices</p>
+<p></p>
+}
+@if (Model.Service.Equals("SiteWeb"))
+{
+    <p>Usługa: Budowa strony internetowej</p>
+    <p>Imię i nazwisko osoby do kontaktu lub nazwa firmy: @Model.ClientName</p>
+    <p>Adres Email: @Model.ClientEmail</p>
+    <p>Telefon: @Model.ClientPhone</p>
+    @if (Model.HasWebSite == true)
+    {
+        <p>Adres obecnej strony: @Model.WebSiteAddress</p>
+    }
+    @if (Model.HasDomain == true)
+    {
+        <p>Nazwa i operator domeny: @Model.DomainName</p>
+    }
+    @if (Model.HasHosting == true)
+    {
+        <p>Dostawca i pakiet hostingowy: @Model.HostingName</p>
+    }
+    <p>Projekt graficzny: @Model.VisualProjectDesc</p>
+    <p>
+        Charakterystyka strony:
+        @if (Model.WebSiteProfile == "visitpage")
+        {
+            <span>
+                Strona wizytówka -modyfikacje są przewidywane rzadko lub wcale
+            </span>
+        }
+        @if (Model.WebSiteProfile == "cms")
+        {
+            <span>
+                Portal, na którym regularnie będą będą zamieszczane nowe informacje: newsy, ogłoszenia, artykuły
+            </span>
+        }
+        @if (Model.WebSiteProfile == "webapp")
+        {
+            <span>
+                Strona z dodatkowymi funkcjami
+            </span>
+        }
+
+
+    </p>
+    <p>Opis: @Model.CMSDesc</p>
+    <p>Termin wykonania: @Model.Deadline</p>
+    <p>Uwagi: @Model.Notices</p>
+    <p></p>
+    
+  
+}
+@if (Model.Service.Equals("Shop"))
+{
+    <p>Usługa: Budowa sklepu internetowego</p>
+    <p>Imię i nazwisko osoby do kontaktu lub nazwa firmy: @Model.ClientName</p>
+    <p>Adres Email: @Model.ClientEmail</p>
+    <p>Telefon: @Model.ClientPhone</p>
+    @if (Model.HasWebSite == true)
+    {
+        <p>Adres obecnej strony: @Model.WebSiteAddress</p>
+    }
+    @if (Model.HasDomain == true)
+    {
+        <p>Nazwa i operator domeny: @Model.DomainName</p>
+    }
+    @if (Model.HasHosting == true)
+    {
+        <p>Dostawca i pakiet hostingowy: @Model.HostingName</p>
+    }
+    <p>Projekt graficzny: @Model.VisualProjectDesc</p>
+
+    <p>Opis: @Model.ShopDesc</p>
+    <p>Termin wykonania: @Model.Deadline</p>
+    <p>Uwagi: @Model.Notices</p>
+    <p></p>
+}
+@if (Model.Service.Equals("WebApp"))
+{
+    <p>Usługa: Budowa aplikacji webowej</p>
+    <p>Imię i nazwisko osoby do kontaktu lub nazwa firmy: @Model.ClientName</p>
+    <p>Adres Email: @Model.ClientEmail</p>
+    <p>Telefon: @Model.ClientPhone</p>
+    @if (Model.HasWebSite == true)
+    {
+        <p>Adres obecnej strony: @Model.WebSiteAddress</p>
+    }
+    @if (Model.HasDomain == true)
+    {
+        <p>Nazwa i operator domeny: @Model.DomainName</p>
+    }
+    @if (Model.HasHosting == true)
+    {
+        <p>Dostawca i pakiet hostingowy: @Model.HostingName</p>
+    }
+    <p>Projekt graficzny: @Model.VisualProjectDesc</p>
+
+    <p>Opis: @Model.WebAppDesc</p>
+    <p>Termin wykonania: @Model.Deadline</p>
+    <p>Uwagi: @Model.Notices</p>
+    <p></p>
+}
+@if (Model.Service.Equals("MobileApp"))
+{
+          <p>Usługa: Budowa aplikacji mobilnej</p>
+        <p>Imię i nazwisko osoby do kontaktu lub nazwa firmy: @Model.ClientName</p>
+        <p>Adres Email: @Model.ClientEmail</p>
+        <p>Telefon: @Model.ClientPhone</p>
+        <p>System operacyjny: @Model.OperatingSystem</p>
+        <p>Język programowania: @Model.Language</p>
+
+
+        <p>Projekt graficzny: @Model.VisualProjectDesc</p>
+
+        <p>Opis: @Model.MobileAppDesc</p>
+        <p>Termin wykonania: @Model.Deadline</p>
+        <p>Uwagi: @Model.Notices</p>
+        <p></p>
+}

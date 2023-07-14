@@ -1,0 +1,146 @@
+﻿@using ClientsManagmentApp.Interfaces;
+@using Microsoft.AspNetCore.Identity;
+@model ProjectModel
+@{
+    ViewData["Title"] = "Dane projektu";
+}
+
+@inject IClientRepository clientRepository
+@inject UserManager<IdentityUser> userManager
+@inject IFileService fileService
+
+
+<h2 class="card-title">@ViewData["Title"]</h2>
+<div style="margin-top: 20px; margin-bottom:20px;">
+<p>Created: @Model.CreatedDate; Created by: @Model.CreatedBy</p>
+<p>Last updated: @Model.UpdatedDate; Updated by: @Model.UpdatedBy</p>
+<div class="form-control">
+    <p>Wycena: @String.Format("{0:0.00}", Model.Price) zł </p>
+
+</div>
+
+<div class="form-control">
+    <p>Nazwa projektu: @Model.ProjectName</p>
+   
+</div>
+
+<div class="form-control">
+    <p>Termin wykonania: @Model.DeadLine</p>
+    
+</div>
+
+<div class="form-control">
+    <p>Opis projektu</p>
+    
+</div>
+</div>
+<div style="margin-top: 20px; margin-bottom:20px;">
+ <form asp-controller="Client" role="form" method="post" class="form-control">
+        <input class="input-group" asp-for="ProjectId" type="hidden" />
+     <div class="form-control">
+            @if(Model.ProjectStatus.Equals("valuation"))
+            {
+                <p>Status: W trakcie wyceny </p>
+            }
+            @if(Model.ProjectStatus.Equals("pending"))
+            {
+                <p>Status: Oczekiwanie na akceptację Zlecającego </p>
+                <button name="ProjectStatus" class="btn-success" type="submit" value="acceptedByClient" asp-action="ChangeProjectStatus">Akceptuję wycenę, termin, regulamin, umowę(jeśli stanowi załącznik do projektu) oraz specyfikację warunków zamówienia</button>
+            }
+            @if (Model.ProjectStatus.Equals("acceptedByClient"))
+            {
+                <p>Status: Zaakceptowane przez Zlecającego </p>
+                <button name="ProjectStatus" class="btn-success" type="submit" value="jobacceptedByClient" asp-action="ChangeProjectStatus">Potwierdzam, że projekt został wykonany zgodnie ze Specyfikacją warunków zamówienia</button>
+            }
+            @if (Model.ProjectStatus.Equals("jobacceptedByClient"))
+            {
+                <p>Status: Zlecenie odebrane przez Zlecającego - projekt zakończony</p>
+            }
+    </div>
+</form>
+<div style="margin-top: 20px; margin-bottom:20px;">
+<form asp-controller="Client" role="form" method="post" class="form-control">
+  
+   
+    <input class="input-group" asp-for="ProjectId" type="hidden" />
+    <p></p>
+
+        <button type="submit" class="btn-primary" asp-action="GetProjectCredentials">Loginy i hasła</button>
+    <button type="submit" class="btn-secondary" asp-action="ClientProjectsList">Powrót do listy projektów</button>
+    <p></p>
+    <p></p>
+    <button type="submit" class="btn-danger" asp-action="RemoveProjectConfirmation" id="ProjectRemove">Usuń projekt</button>
+
+</form>
+</div>
+
+<p></p>
+<div class="container-fluid" style="margin-top: 5%;">
+<h3 class="card-subtitle">Pliki</h3>
+<div style="margin-top: 20px; margin-bottom:20px;">
+<p></p>
+@{
+    FileModel file = new()
+            {
+                ProjectId = Model.ProjectId,
+                Uploader = "client"
+            };
+    var files = await fileService.GetProjectFiles(file);
+
+}
+@if (files.Count() > 0)
+{
+    <h4 class="card-subtitle">Lista plików</h4>
+    <ul class="list-group">
+        @foreach (var f in files)
+        {
+            <li class="list-group-item"><form method="post" asp-controller="Client"><input name="ProjectId" type="hidden" value="@Model.ProjectId" /><input type="hidden" name="FilePath" value="@f.FilePath" /><input type="hidden" name="FileName" value="@f.FileName" /><button asp-action="DownloadFile" class="btn-secondary" type="submit"> @f.FileName </button><span>    </span><button asp-action="RemoveFile" class="btn-danger" type="submit"> Usuń plik </button></form></li>
+        }
+
+    </ul>
+    <p></p>
+}
+<h4 class="card-subtitle">Dodaj plik</h4>
+<form enctype="multipart/form-data" method="post" asp-action="UploadFile" asp-controller="Client">
+    <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
+    <label for="UploadFiles" class="form-label">Wybierz plik z dysku </label>
+    <input class="form-control" type="file" name="UploadFiles" required multiple/>
+    <p></p>
+    <button type="submit" class="btn-success">Wgraj Plik</button>
+</form>
+</div></div>
+
+<p></p>
+<div class="container-fluid" style="margin-top:5%;">
+<h3 class="card-subtitle">Aktualizacje</h3>
+<p></p>
+<div style="margin-top: 20px; margin-bottom:20px;">
+@{
+    var projectUpdates = await clientRepository.GetClientUpdatesAsync(Model.ProjectId);
+    var curUserId = userManager.GetUserId(Context.User);
+}
+@if (projectUpdates.Count() > 0)
+{
+    @foreach (var update in projectUpdates)
+    {
+        <div class="list-group">
+            <p>Created by: @update.CreatedBy Created: @update.CreatedDate Last update: @update.UpdatedDate</p>
+            <p>@Html.Raw(update.Description)</p>
+            @if (update.CreatedById == curUserId && update.CreatedDate.Value.AddDays(1) > DateTime.Now)
+            {
+                <form asp-action="EditUpdate" asp-controller="Client" role="form" method="post">
+                    <input type="hidden" name="UpdateId" value="@update.UpdateId" />
+                <button asp-action="EditUpdate" type="submit" class="btn-primary">Edytuj aktualizację</button>
+                <button asp-action="RemoveUpdate" type="submit" class="btn-danger">Usuń aktualizację</button>
+                </form>
+            }
+        </div>
+    }
+}
+<form asp-action="AddUpdate" asp-controller="Client" role="form" method="post">
+    <label class="form-label" for="Description">Nowa aktualizacja</label>
+    <textarea id="editor" name="Description" class="form-control" required><p style="min-height: 300px;"></p></textarea>
+    <input value="@Model.ProjectId" name="ProjectId" type="hidden" />
+    <button type="submit" class="btn-success">Dodaj aktualizację</button>
+</form>
+</div></div>

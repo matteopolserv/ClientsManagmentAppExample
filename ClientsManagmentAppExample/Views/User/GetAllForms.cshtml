@@ -1,0 +1,30 @@
+﻿@model List<FormModel>
+@{
+    ViewData["Title"] = "Lista formularzy";
+}
+<h2 class="card-title">@ViewData["Title"]</h2>
+<p>@Html.ValidationSummary("", new { @class = "text-danger" })</p>
+    <table class="table table-dark">
+        <thead>
+            <tr class="flex-row">
+                <th>Imię i nazwisko/Nazwa</th>
+                <th>Email</th>
+                <th>Numer telefonu</th>
+                <th>Rodzaj usługi</th>
+                <th>Zobacz szczegóły</th>
+            </tr>
+        </thead>
+    <tbody >
+        @foreach(var item in Model)
+        {
+            <tr class="flex-row">
+                <td>@item.ClientName</td>
+                <td>@item.ClientEmail</td>
+                <td>@item.ClientPhone</td>
+                <td>@item.Service</td>
+                <td><form asp-action="GetFormDetails" role="form" method="post"><input type="hidden" name="Id" value="@item.Id" /><button class="btn btn-primary">Szczegóły</button></form></td>
+            </tr>
+        }
+    </tbody>
+
+    </table>

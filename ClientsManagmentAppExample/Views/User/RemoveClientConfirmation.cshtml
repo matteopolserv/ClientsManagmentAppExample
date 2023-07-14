@@ -1,0 +1,20 @@
+﻿@model ClientModel
+@{
+    ViewData["Title"] = "Potwierdź usunięcie użytkownika";
+}
+
+
+<h2 class="card-title"> @ViewData["Title"]</h2>
+
+<p>Aby usunąć użytkownika wpisz jego pełną nazwę, uwzględniając małe i wielkie litery oraz spacje</p>
+<form role="form" method="post" class="form-control" asp-controller="User">
+    <input type="hidden" asp-for="ClientId" name="Id" />
+    <p>Nazwa klienta: @Model.ClientName</p>
+    <label class="form-label" asp-for="ClientName">Wpisz nazwę użytkownika</label>
+    <input class="input-group" asp-for="ClientName" value="" name="ClientName" required/>
+    <p></p>
+    <button asp-action="RemoveClient" class="btn-danger">Usuń</button>
+    <button asp-action="GetAllClients" class="btn-primary">Zrezygnuj</button>
+    
+</form>
+

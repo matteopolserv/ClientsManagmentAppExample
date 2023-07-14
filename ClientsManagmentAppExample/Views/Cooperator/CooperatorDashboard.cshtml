@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewData["Title"] = "Panel współpracownika";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (!ViewData.ModelState.IsValid && ViewData.ModelState[""].Errors.Count() > 0)
+{
+    <p class="text-danger">@ViewData.ModelState[""].Errors.First()</p>
+}
+
+<p><a class="btn btn-primary" asp-action="GetAllCooperatorProjects">Zobacz listę projektów</a></p>
